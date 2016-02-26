@@ -7,6 +7,7 @@ module SwhdApi
   class Manager
     attr_reader :session_id
     attr_reader :url
+    attr_accessor :logger
 
     def initialize(url = nil, options = {})
       raise SwhdApi::MissingUrl if url.nil? || url.empty?
@@ -69,23 +70,38 @@ module SwhdApi
       elsif response.return_code == :partial_file
         raise PartialFile.new(response.body)
       elsif !response.success?
-        if response.code > 0
-          raise RequestFailed.new("Response Code: #{response.code}\nReturn Code: #{response.return_code} - #{response.return_message}\n#{response.body}")
+        if response.code == 401
+          raise AuthenticationFailure.new(response.return_message)
         else
-          begin
-            error_messages = JSON.parse(response.body)['error_message']
-          rescue
-            response_code_desc = response.headers.partition("\r\n")[0].sub(/^\S+/, '') rescue nil
-            raise RequestFailed.new("Unknown error #{response_code_desc}")
-          else
-            raise RequestFailed.new(error_messages)
-          end
+          raise RequestFailed.new("Response Code: #{response.code}\nReturn Code: #{response.return_code} - #{response.return_message}\n#{response.body}")
         end
       end
-puts " --------------------------------------- "
-puts response.body
-puts " --------------------------------------- "
-      JSON.parse(response.body)
+
+      unless @logger.nil?
+        @logger.debug response.body
+      end
+
+      results = JSON.parse(response.body)
+    end
+
+    # if we are fetching (get) and the results are an array, then fetch additional pages until exhausted
+    def fetch(resource, params = {})
+      method = :get
+      page = 1
+
+      params[:page] = page
+      partial = request(resource, method, params)
+      while (partial.is_a?(Array) && !partial.empty?) do
+        results ||= []
+        results += partial
+        page += 1
+        params[:page] = page
+        partial = request(resource, method, params)
+      end
+
+      results = partial unless partial.nil? || partial.empty?
+
+      results
     end
 
   end

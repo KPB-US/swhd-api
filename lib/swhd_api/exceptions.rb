@@ -1,4 +1,5 @@
 module SwhdApi
+  class AuthenticationFailure < StandardError; end
   class MissingCredentials < ArgumentError; end
   class MissingUrl < ArgumentError; end
   class NoSession < StandardError; end

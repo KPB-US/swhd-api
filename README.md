@@ -22,6 +22,8 @@ Or install it yourself as:
 require 'swhd_api'
 m = SwhdApi::Manager.new(url, options)
 m.connect(credentials)
+m.request("Clients", :get).count 
+m.fetch("Clients").count
 ```
 
 The _url_ is the api service url such as `https://helpdesk/helpdesk/WebObjects/Helpdesk.woa/ra`
@@ -34,6 +36,9 @@ The _credentials_ hash includes one of the following
 `{ techkey: value }`
 `{ username: value, password: value }`
 and is used to obtain a session for subsequent calls.
+
+** there are problems with their session api, so for now we have to pass the apikey: value in the credentials so they
+get stored in the code and passed along instead of the sessionKey.
 
 ## Development
 

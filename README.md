@@ -1,9 +1,5 @@
 # SwhdApi
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/swhd_api`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
-
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -22,7 +18,22 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+require 'swhd_api'
+m = SwhdApi::Manager.new(url, options)
+m.connect(credentials)
+```
+
+The _url_ is the api service url such as `https://helpdesk/helpdesk/WebObjects/Helpdesk.woa/ra`
+and _options_, if specified, is a hash that is passed to Typhoeus, and if you are using a self-signed
+SSL certificate, it may need to contain `{ ssl_verifypeer: false, ssl_verifyhost: 0 }`.  There's
+also the `{ verbose: true }` option, if you are debugging with irb.
+
+The _credentials_ hash includes one of the following
+`{ apikey: value }`
+`{ techkey: value }`
+`{ username: value, password: value }`
+and is used to obtain a session for subsequent calls.
 
 ## Development
 

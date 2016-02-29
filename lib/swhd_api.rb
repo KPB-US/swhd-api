@@ -46,6 +46,7 @@ module SwhdApi
       # HACK for now, use apikey instead of session key
       params["apiKey"] = @session_id
       payload = @options.dup
+      payload[:params] = params.reject {|k,v| v.nil?}
 
       response =
       case method
@@ -53,13 +54,11 @@ module SwhdApi
         payload[:body] = body
         Typhoeus::Request.post(endpoint, payload)
       when :get
-        payload[:params] = params.reject {|k,v| v.nil?}
         Typhoeus::Request.get(endpoint, payload)
       when :put
         payload[:body] = body
         Typhoeus::Request.put(endpoint, payload)
       when :delete
-        payload[:params] = params.reject {|k,v| v.nil?}
         Typhoeus::Request.delete(endpoint, payload)
       end
 

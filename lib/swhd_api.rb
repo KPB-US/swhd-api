@@ -51,12 +51,12 @@ module SwhdApi
       response =
       case method
       when :post
-        payload[:body] = body
+        payload[:body] = body.to_json
         Typhoeus::Request.post(endpoint, payload)
       when :get
         Typhoeus::Request.get(endpoint, payload)
       when :put
-        payload[:body] = body
+        payload[:body] = body.to_json
         Typhoeus::Request.put(endpoint, payload)
       when :delete
         Typhoeus::Request.delete(endpoint, payload)

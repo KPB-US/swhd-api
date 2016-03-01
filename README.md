@@ -1,4 +1,4 @@
-# SwhdApi
+# SolarWinds Helpdesk Api Helper
 
 ## Installation
 
@@ -29,7 +29,7 @@ m.fetch("Clients").count
 The _url_ is the api service url such as `https://helpdesk/helpdesk/WebObjects/Helpdesk.woa/ra`
 and _options_, if specified, is a hash that is passed to Typhoeus, and if you are using a self-signed
 SSL certificate, it may need to contain `{ ssl_verifypeer: false, ssl_verifyhost: 0 }`.  There's
-also the `{ verbose: true }` option, if you are debugging with irb.
+also the `{ verbose: true }` option, if you are debugging.
 
 The _credentials_ hash includes one of the following
 `{ apikey: value }`

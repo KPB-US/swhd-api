@@ -55,3 +55,4 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/KPB-US
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
 
+[Solar Winds API documentation is available here](http://www.solarwinds.com/documentation/webhelpdesk/docs/whd_api_12.2.0/web%20help%20desk%20api.html)
